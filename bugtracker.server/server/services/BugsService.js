@@ -16,18 +16,18 @@ class BugsService {
     return await dbContext.Bugs.create(body)
   }
 
-  async editBug(body) {
-    const check = this.getBugById(body.id)
-    if (check.closed === false) { throw new BadRequest('did this connect?') }
-    // if (check.closed === false) {
-    const data = await dbContext.Bugs.findOneAndUpdate({ _id: body.id }, body, { new: true })
-    if (!data) {
-      throw new BadRequest('Invalid Id')
-    }
-    return data
-    // }
-    // throw new BadRequest('This bug is closed')
-  }
+  // async editBug(body) {
+  //   const check = this.getBugById(body.id)
+  //   if (check.closed === false) { throw new BadRequest('did this connect?') }
+  //   // if (check.closed === false) {
+  //   const data = await dbContext.Bugs.findOneAndUpdate({ _id: body.id }, body, { new: true })
+  //   if (!data) {
+  //     throw new BadRequest('Invalid Id')
+  //   }
+  //   return data
+  //   // }
+  //   // throw new BadRequest('This bug is closed')
+  // }
 
   // change closed true to false
   async deleteBug(bugId, creatorId) {

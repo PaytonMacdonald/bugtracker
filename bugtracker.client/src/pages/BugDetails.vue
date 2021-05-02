@@ -1,3 +1,5 @@
+<!------------------------------------------------------------>
+
 <template>
   <div class="container-fluid m-5">
     <!-- top half of page -->
@@ -10,7 +12,7 @@
           </div>
           <div class="col d-flex justify-content-end align-items-end">
             <button type="button" class="btn btn-danger btn-lg px-5">
-              Close
+              Close This Bug
             </button>
           </div>
         </div>
@@ -54,14 +56,14 @@
             <h4>delete</h4>
           </div>
         </div>
-        <NoteComponent />
-        <NoteComponent />
-        <NoteComponent />
+        <NoteComponent /> <!-- v-for="note in state.notes" :key="note.id" :note-prop="note" -->
         <div class="row bg-dark border-line"></div>
       </div>
     </div>
   </div>
 </template>
+
+<!------------------------------------------------------------>
 
 <script>
 import NoteComponent from '../components/NoteComponent'
@@ -69,11 +71,21 @@ import NoteComponent from '../components/NoteComponent'
 export default {
   name: 'BugDetails',
 
+  // setup() {
+  //   const route = useRoute()
+  //   const state = reactive({
+  //     board: computed(() => AppState.activeBoard),
+  //     lists: computed(() => AppState.lists),
+  //     newList: {}
+  //   })
+  // },
   components: {
     NoteComponent
   }
 }
 </script>
+
+<!------------------------------------------------------------>
 
 <style scoped>
 h2, h3, h4, h5, h6{
@@ -98,3 +110,5 @@ h2, h3, h4, h5, h6{
 }
 
 </style>
+
+<!------------------------------------------------------------>

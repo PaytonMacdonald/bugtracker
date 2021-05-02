@@ -1,3 +1,5 @@
+<!------------------------------------------------------------>
+
 <template>
   <!-- <div class="home flex-grow-1 d-flex flex-column align-items-center justify-content-center">
     <img src="https://bcw.blob.core.windows.net/public/img/8600856373152463" alt="CodeWorks Logo">
@@ -40,27 +42,49 @@
             <h6>Last Modified</h6>
           </div>
         </div>
-        <BugComponent />
-        <BugComponent />
-        <BugComponent />
+        <BugComponent /> <!-- v-for="bug in state.bugs" :key="bug.id" :bug-prop="bug" -->
         <div class="row border-line bg-dark"></div>
       </div>
     </div>
   </div>
 </template>
 
+<!------------------------------------------------------------>
+
 <script>
-import { reactive } from 'vue'
+import { reactive } from 'vue' // , computed, onMounted
+// import { AppState } from '../AppState'
+// import { bugsService } from '../services/BugsService'
 import BugComponent from '../components/BugComponent'
+// import Notification from '../utils/Notification'
 
 export default {
   name: 'Home',
+
   setup() {
     const state = reactive({
-
+      // bugs: computed(() => AppState.bugs),
+      // newBug: {}
     })
+    // onMounted(async() => {
+    //   try {
+    //     await bugsService.getAllBugs()
+    //   } catch (error) {
+    //     Notification.toast('Error:' + error, 'error')
+    //   }
+    // })
     return {
       state
+      // async createBug() {
+      //   try {
+      //     await bugsService.createBug(state.newBug)
+      //     state.newBug = {}
+      //     await bugsService.getAllBugs()
+      //     Notification.toast('New Bug Reported', 'success')
+      //   } catch (error) {
+      //     Notification.toast('Error: ' + error, 'error')
+      //   }
+      // }
     }
   },
   components: {
@@ -68,6 +92,8 @@ export default {
   }
 }
 </script>
+
+<!------------------------------------------------------------>
 
 <style scoped lang="scss">
 .home{
@@ -94,3 +120,5 @@ h1, h6{
   border-width: 0.1rem;
 }
 </style>
+
+<!------------------------------------------------------------>
