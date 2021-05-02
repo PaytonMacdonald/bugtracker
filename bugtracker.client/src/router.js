@@ -22,8 +22,9 @@ const routes = [
     component: loadPage('AccountPage'),
     beforeEnter: authGuard
   },
+  // TODO replace path with: '/bugdetails/:id'
   {
-    path: '/BugDetails',
+    path: '/bugdetails',
     name: 'BugDetails',
     component: loadPage('BugDetails')
   }

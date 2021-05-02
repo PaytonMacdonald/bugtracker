@@ -1,60 +1,32 @@
 <template>
   <div class="row side-lines bottom-line2 py-2">
     <div class="col-3">
+      <!-- TODO <router-link :to="{name: 'BugDetails', params: {id: bugProp.id}}"></router-link> -->
       <span>This is the bug</span>
+      <!-- TODO {{ bugProp.title }} -->
     </div>
     <div class="col-3">
       <span>Dean Smith</span>
+      <!-- TODO {{ user.name }} find with creator id???-->
     </div>
     <div class="col-3">
       <span class="text-success">Open</span>
     </div>
     <div class="col-3">
       <span>04/25/2021</span>
+      <!-- TODO {{ bugProp.closedDate }} not just the created date??? updates when createBug editBug or deleteBug runs?-->
     </div>
   </div>
 </template>
 
 <script>
-import { reactive } from 'vue'
-// import { bugsService } from '../services/BugsService'
 
 export default {
   name: 'Bug',
-  // props: {
-  //   bugProp: {
-  //     type: Object,
-  //     required: true
-  //   }
-  // },
-  setup(props) {
-    const state = reactive({
-      // newBug: {}
-    })
-    // onMounted(async() => {
-    //   try {
-    //     await bugsService.getAllBug(props.bugProp.id)
-    //   } catch (error) {
-    //     Notification.toast('Error:' + error, 'error')
-    //   }
-    // })
-    return {
-      state
-      // async createBug() {
-      //   try {
-      //     state.newBug.taskId = props.taskProp.id
-      //     await bugsService.createBug(state.newBug)
-      //     state.newBug = {}
-      //     await bugsService.getAllBug(props.bugProp.id)
-      //     Notification.toast('Bug Reported!', 'success')
-      //   } catch (error) {
-      //     Notification.toast('Error: ' + error, 'error')
-      //   }
-      // }
-      // async deleteBug(id) {
-      //   try {
-
-      // },
+  props: {
+    bugProp: {
+      type: Object,
+      required: true
     }
   }
 }
