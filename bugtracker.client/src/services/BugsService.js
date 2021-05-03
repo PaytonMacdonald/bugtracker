@@ -8,10 +8,10 @@ class BugsService {
     AppState.bugs = res.data
   }
 
-  async getBugById(id) {
-    const res = await api.get('api/bugs/' + id)
-    AppState.activeBug = res.data
-  }
+  // async getBugById(id) {
+  //   const res = await api.get('api/bugs/' + id)
+  //   AppState.activeBug = res.data
+  // }
 
   // async createBug(data) {
   //   await api.post('api/bugs/', data)

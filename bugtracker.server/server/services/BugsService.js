@@ -7,8 +7,13 @@ class BugsService {
     return bugs
   }
 
-  async getBugById(query) {
-    const bug = await dbContext.Bugs.findOne(query)
+  async getBugById(id) {
+    const bug = await dbContext.Bugs.findById(id)
+    // .populate('creator', 'name picture')
+    // .populate('comments.creator', 'name picture')
+    if (!bug) {
+      throw new BadRequest('Invalid Id')
+    }
     return bug
   }
 

@@ -27,4 +27,8 @@ export default {
 <style lang="scss">
 @import "./assets/scss/main.scss";
 
+.pointer{
+  cursor: pointer;
+}
+
 </style>

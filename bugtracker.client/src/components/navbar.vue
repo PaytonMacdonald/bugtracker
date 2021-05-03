@@ -6,6 +6,7 @@
           alt="logo"
           src="../assets/img/bugtracker-logo.png"
           height="45"
+          title="logo, click to go to home page"
         />
       </div>
     </router-link>
@@ -43,6 +44,7 @@
           class="btn btn-outline-primary text-uppercase"
           @click="login"
           v-if="!user.isAuthenticated"
+          title="click to login"
         >
           Login
         </button>
@@ -56,22 +58,23 @@
               :src="user.picture"
               alt="user photo"
               height="40"
-              class="rounded"
+              class="rounded pointer"
+              title="user photo"
             />
-            <span class="mx-3">{{ user.name }}</span>
+            <span class="mx-3 pointer" title="user name">{{ user.name }}</span>
           </div>
           <div
-            class="dropdown-menu p-0 list-group w-100"
+            class="dropdown-menu p-0 list-group w-100 pointer"
             :class="{ show: state.dropOpen }"
             @click="state.dropOpen = false"
           >
             <router-link :to="{ name: 'Account' }">
-              <div class="list-group-item list-group-item-action hoverable">
+              <div class="list-group-item list-group-item-action hoverable pointer">
                 Account
               </div>
             </router-link>
             <div
-              class="list-group-item list-group-item-action hoverable"
+              class="list-group-item list-group-item-action hoverable pointer"
               @click="logout"
             >
               logout

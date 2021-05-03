@@ -1,17 +1,17 @@
 <!------------------------------------------------------------>
 
 <template>
-  <div class="container-fluid m-5">
+  <div class="container-fluid m-2 m-md-5">
     <!-- TITLE section -->
-    <div class="row">
+    <div class="row mt-3 mt-md-0">
       <div class="col">
-        <div class="row pb-2 bottom-line">
-          <div class="col">
-            <h1 class="mr-5">
+        <div class="row pb-2 pb-md-3 bottom-line d-flex flex-column flex-md-row">
+          <div class="col d-flex flex-column flex-md-row justify-content-center justify-content-md-start">
+            <h1 class="text-center text-mdd-left mr-md-5">
               Current Bugs
             </h1>
             <!-- Button trigger modal -->
-            <button type="button" class="btn btn-primary mb-2" data-toggle="modal" data-target="#exampleModal">
+            <button type="button" class="btn btn-primary mx-3 mx-md-0 mt-3 mb-3 mb-md-0 mt-md-2" data-toggle="modal" data-target="#exampleModal" title="click to report a bug">
               Report a Bug
             </button>
             <!-- Modal -->
@@ -28,7 +28,7 @@
                     <h5 class="modal-title" id="exampleModalLabel">
                       Report a Bug
                     </h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" title="close modal">
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
@@ -53,11 +53,11 @@
                     </form>
                   </div>
                   <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">
+                    <button type="submit" class="btn btn-primary" title="submit bug">
                       Report
                     </button>
-                    <!-- <router-link :to="{name: 'BugDetails', params: {id: state.activeBug.id}}"></router-link> -->
-                    <button type="button" class="btn btn-dark" data-dismiss="modal">
+                    <!-- TODO <router-link :to="{name: 'BugDetails', params: {id: state.activeBug.id}}"></router-link> -->
+                    <button type="button" class="btn btn-dark" data-dismiss="modal" title="cancel report and close modal">
                       Cancel
                     </button>
                   </div>
@@ -65,10 +65,10 @@
               </div>
             </div>
           </div>
-          <div class="col d-flex justify-content-end align-items-end">
+          <div class="col d-flex justify-content-end align-items-end mt-2">
             <span>
               hide closed bugs
-              <input type="checkbox" class="ml-2">
+              <input type="checkbox" class="ml-2 pointer" title="click to hide all closed bugs">
               <!-- TODO non-server function @click="hideClosed" -->
             </span>
           </div>
@@ -76,11 +76,13 @@
       </div>
     </div>
     <!-- BUG LIST section -->
-    <div class="row m-5">
+    <div class="row d-flex flex-column flex-md-row mt-4 m-md-5">
       <div class="col">
-        <div class="row border-line text-white bg-dark">
+        <div class="row border-line text-white bg-dark mobile-gone">
           <div class="col-3">
-            <h6>Title</h6>
+            <h6 class="small-size">
+              Title
+            </h6>
           </div>
           <div class="col-3">
             <h6>Reported By</h6>
@@ -95,7 +97,7 @@
           </div>
         </div>
         <!-- TODO filter in this tag <div :class="{{checkbox ? 'hide-thing' : ''}}"></div> -->
-        <BugComponent /> <!-- TODO v-for="bug in state.bugs" :key="bug.id" :bug-prop="bug" -->
+        <BugComponent v-for="bug in state.bugs" :key="bug.id" :bug-prop="bug" />
         <div class="row border-line bg-dark"></div>
       </div>
     </div>
@@ -106,58 +108,59 @@
 
 <script>
 import BugComponent from '../components/BugComponent'
-// import { reactive } from 'vue' // , computed, onMounted
-// import { AppState } from '../AppState'
-// import { bugsService } from '../services/BugsService'
-// import Notification from '../utils/Notification'
+import { reactive, computed, onMounted } from 'vue'
+import { AppState } from '../AppState'
+import { bugsService } from '../services/BugsService'
+import Notification from '../utils/Notification'
+// import { logger } from '../utils/Logger'
 
 export default {
   name: 'Home',
 
-  // setup() {
-  //   const state = reactive({
-  //     bugs: computed(() => AppState.bugs),
-  //     activeBug: computed(() => AppState.activeBug),
-  //     newBug: {},
-  //     checkbox: true // NOTE this is for the hide closed function
-  //   })
-  //   onMounted(async() => {
-  //     try {
-  //       await bugsService.getAllBugs()
-  //     } catch (error) {
-  //       Notification.toast('Error:' + error, 'error')
-  //     }
-  //   })
-  //   return {
-  //     state,
-  //     user: computed(() => AppState.user),
+  setup() {
+    const state = reactive({
+      bugs: computed(() => AppState.bugs)
+      // activeBug: computed(() => AppState.activeBug),
+      // newBug: {},
+      // checkbox: true // NOTE this is for the hide closed function
+    })
+    onMounted(async() => {
+      try {
+        await bugsService.getAllBugs()
+      } catch (error) {
+        Notification.toast('Error:' + error, 'error')
+      }
+    })
+    return {
+      state
+      // user: computed(() => AppState.user)
 
-  // TODO
-  //     async createBug() {
-  //       try {
-  //         await bugsService.createBug(state.newBug)
-  //         state.newBug = {}
-  //         await bugsService.getAllBugs()
-  //         Notification.toast('New Bug Reported', 'success')
-  //       } catch (error) {
-  //         Notification.toast('Error: ' + error, 'error')
-  //       }
-  //     }
-  //   }
-  // },
+      // TODO
+      //     async createBug() {
+      //       try {
+      //         await bugsService.createBug(state.newBug)
+      //         state.newBug = {}
+      //         await bugsService.getAllBugs()
+      //         Notification.toast('New Bug Reported', 'success')
+      //       } catch (error) {
+      //         Notification.toast('Error: ' + error, 'error')
+      //       }
+      //     }
 
-  // TODO // non server function
-  // hideClosed(){
-  // if(checkbox == false){
-  //   checkbox = true
-  // }
-  // else{checkbox = false}
-  // }
+      // TODO // non server function
+      // hideClosed(){
+      // if(checkbox == false){
+      //   checkbox = true
+      // }
+      // else{checkbox = false}
+      // }
 
-  // TODO // non server function
-  // reorderByStatus(){}
-  // reorderByDate(){}
+      // TODO // non server function
+      // reorderByStatus(){}
+      // reorderByDate(){}
 
+    }
+  },
   components: {
     BugComponent
   }
@@ -192,6 +195,11 @@ h1, h6, p{
 }
 .hide-thing{
   display: none;
+}
+@media screen and (max-width: 600px) {
+  .mobile-gone {
+    display: none;
+  }
 }
 </style>
 
