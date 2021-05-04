@@ -67,7 +67,7 @@
           <div class="col d-flex justify-content-end align-items-end mt-2">
             <span>
               hide closed bugs
-              <input type="checkbox" class="ml-2 pointer" title="click to hide all closed bugs">
+              <input type="checkbox" class="ml-2 pointer" title="click to hide all closed bugs" @click="hideClosed">
               <!-- TODO non-server function @click="hideClosed" -->
             </span>
           </div>
@@ -83,7 +83,7 @@
               Title
             </h6>
           </div>
-          <div class="col-3 text-center">
+          <div class="col-3">
             <h6>Reported By</h6>
           </div>
           <div class="col-3 text-center">
@@ -96,7 +96,13 @@
           </div>
         </div>
         <!-- TODO filter in this tag <div :class="{{checkbox ? 'hide-thing' : ''}}"></div> -->
-        <BugComponent v-for="bug in state.bugs" :key="bug.id" :bug-prop="bug" />
+        <div v-if="state.checkbox == false">
+          <BugComponent v-for="bug in state.bugs" :key="bug.id" :bug-prop="bug" />
+        </div>
+        <span>BREAK</span>
+        <div v-if="state.checkbox == true">
+          <BugComponentFiltered v-for="bug in state.bugs" :key="bug.id" :bug-prop="bug" />
+        </div>
         <div class="row border-line bg-dark"></div>
       </div>
     </div>
@@ -107,6 +113,7 @@
 
 <script>
 import BugComponent from '../components/BugComponent'
+import BugComponentFiltered from '../components/BugComponentFiltered'
 import { reactive, computed, onMounted } from 'vue'
 import { AppState } from '../AppState'
 import { bugsService } from '../services/BugsService'
@@ -122,10 +129,11 @@ export default {
       bugs: computed(() => AppState.bugs),
       activeBug: computed(() => AppState.activeBug),
       user: computed(() => AppState.user),
-      newBug: {}
-      // checkbox: true // NOTE this is for the hide closed function
+      newBug: {},
+      checkbox: false // NOTE this is for the hide closed function
     })
     onMounted(async() => {
+      state.checkbox = false
       try {
         await bugsService.getAllBugs()
       } catch (error) {
@@ -147,15 +155,14 @@ export default {
         } catch (error) {
           Notification.toast('Error: ' + error, 'error')
         }
-      }
+      },
 
       // TODO // non server function
-      // hideClosed(){
-      // if(checkbox == false){
-      //   checkbox = true
-      // }
-      // else{checkbox = false}
-      // }
+      hideClosed() {
+        if (state.checkbox === false) {
+          state.checkbox = true
+        } else { state.checkbox = false }
+      }
 
       // TODO // non server function
       // reorderByStatus(){}
@@ -164,7 +171,8 @@ export default {
     }
   },
   components: {
-    BugComponent
+    BugComponent,
+    BugComponentFiltered
   }
 }
 </script>

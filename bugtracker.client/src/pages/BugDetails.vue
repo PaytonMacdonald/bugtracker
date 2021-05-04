@@ -13,15 +13,17 @@
             </h1>
           </div>
           <div class="col d-flex flex-column flex-md-row justify-content-md-end align-items-md-end">
-            <button type="button"
-                    class="btn btn-dark btn mobile-gone"
-                    data-toggle="modal"
-                    data-target="#edit"
-                    title="click to resubmit the bug you reported"
-                    :disabled="state.activeBug.closed == true || state.activeBug.creatorId != state.user.id"
-            >
-              Resubmit
-            </button>
+            <div v-if="state.activeBug.creator && state.activeBug.creator.email === state.user.email">
+              <!-- state.activeBug.closed == true || state.activeBug.creatorId != state.user.id -->
+              <button type="button"
+                      class="btn btn-dark btn mobile-gone"
+                      data-toggle="modal"
+                      data-target="#edit"
+                      title="click to resubmit the bug you reported"
+              >
+                Resubmit
+              </button>
+            </div>
             <!-- Modal -->
             <div class="modal fade"
                  id="edit"
@@ -77,9 +79,11 @@
               Close This Bug
             <!-- TODO @click="deleteBug(???)" -->
             </button>
-            <button type="button" class="btn btn-dark btn-sm mb-2 mb-md-0 desktop-gone" data-toggle="modal" data-target="#edit">
-              Resubmit
-            </button>
+            <div v-if="state.activeBug.creator && state.activeBug.creator.email === state.user.email">
+              <button type="button" class="btn btn-dark btn-sm mb-2 mb-md-0 desktop-gone" data-toggle="modal" data-target="#edit">
+                Resubmit
+              </button>
+            </div>
           </div>
         </div>
         <div class="row d-flex flex-column flex-md-row pt-2 pb-3 pb-md-4 pt-md-1 bottom-line ">
@@ -179,14 +183,16 @@
           </div>
         </div>
         <div class="row border-line2 py-3 mobile-gone bg-dark text-white">
-          <div class="col-4">
+          <div class="col-3">
             <h4>name</h4>
           </div>
           <div class="col">
             <h4>message</h4>
           </div>
           <div class="col-2 text-right">
-            <h4>delete</h4>
+            <div v-if="state.activeBug.creator && state.activeBug.creator.email === state.user.email">
+              <h4>delete</h4>
+            </div>
           </div>
         </div>
         <NoteComponent v-for="note in state.notes" :key="note.id" :note-prop="note" /> <!-- TODO v-for="note in state.notes" :key="note.id" :note-prop="note" -->
@@ -261,7 +267,7 @@ export default {
       // TODO >>> make sure closedDate get's stamped and sent with this one
       async deleteBug(id, date) {
         try {
-          if (await Notification.confirmAction('You are about to set the status to Closed, this action is irreversible. Are you ready to close this bug?', 'Yes, All Donzo!')) {
+          if (await Notification.confirmAction('You are about to set the status to Closed, Are you ready to close this bug?', 'this action is irreversible', 'warning', 'Yes, close it', 'No, not yet')) {
             await bugsService.deleteBug(id)
             Notification.toast('Bug Closed!', 'success')
           }

@@ -3,7 +3,7 @@
 <template>
   <div class="">
     <div class="row border-line py-2 mobile-gone">
-      <div class="col-4 ml-3 d-flex align-items-center">
+      <div class="col-3 ml-3 d-flex align-items-center">
         <h6><img class="rounded-circle" :src="noteProp.creator.picture" alt="" width="30"> {{ noteProp.creator.name }}</h6>
       <!-- TODO {{ noteProp.creator.name }} how do I grab another user's name??? profile model???}} -->
       </div>
@@ -11,10 +11,10 @@
         <p>{{ noteProp.body }}</p>
         <!-- TODO {{ noteProp.body }} -->
       </div>
-      <div class="col-1 d-flex justify-content-end align-items-center">
+      <div class="col-1 d-flex justify-content-end align-items-center" v-if="noteProp.creator && noteProp.creator.email == state.user.email">
         <button type="button" class="btn btn-danger btn-sm px-3 py-2" title="delete this note" @click="deleteNote(noteProp.id)">
           <!-- TODO @click="deleteNote(noteProp.id)" -->
-          x
+          delete
         </button>
       </div>
     </div>
@@ -30,9 +30,8 @@
           <p class="card-text">
             {{ noteProp.body }}
           </p>
-          <div class="col d-flex justify-content-end">
+          <div class="col d-flex justify-content-end" v-if="noteProp.creator && noteProp.creator.email == state.user.email">
             <button type="button" class="btn btn-danger btn-sm px-3 mt-2" title="delete this note" @click="deleteNote(noteProp.id)">
-              <!-- TODO @click="deleteNote(noteProp.id)" disable if it's not you logged in-->
               delete
             </button>
           </div>
@@ -45,8 +44,8 @@
 <!------------------------------------------------------------>
 
 <script>
-import { reactive } from 'vue'
-// import { AppState } from '../AppState'
+import { reactive, computed } from 'vue'
+import { AppState } from '../AppState'
 import Notification from '../utils/Notification'
 import { notesService } from '../services/NotesService'
 
@@ -59,7 +58,9 @@ export default {
     }
   },
   setup(props) {
-    const state = reactive({})
+    const state = reactive({
+      user: computed(() => AppState.user)
+    })
 
     return {
       state,

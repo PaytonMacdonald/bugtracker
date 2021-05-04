@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="bugProp.closed == false">
     <!-- SECTION Desktop List -->
     <div class="row side-lines bottom-line2 py-2 mobile-gone">
       <div class="col-3">
