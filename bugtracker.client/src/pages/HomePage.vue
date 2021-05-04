@@ -99,7 +99,6 @@
         <div v-if="state.checkbox == false">
           <BugComponent v-for="bug in state.bugs" :key="bug.id" :bug-prop="bug" />
         </div>
-        <span>BREAK</span>
         <div v-if="state.checkbox == true">
           <BugComponentFiltered v-for="bug in state.bugs" :key="bug.id" :bug-prop="bug" />
         </div>
