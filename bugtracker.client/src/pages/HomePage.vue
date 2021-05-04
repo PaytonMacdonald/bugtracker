@@ -33,33 +33,32 @@
                     </button>
                   </div>
                   <div class="modal-body">
-                    <form>
-                      <!-- TODO @submit.prevent="createBug(???)" -->
+                    <form @submit.prevent="createBug">
+                      <!-- TODO @submit.prevent="createBug" -->
                       <div class="row mb-4">
                         <div class="col">
-                          <input type="text" class="form-control ml-1" placeholder="Enter Bug Title" required>
+                          <input type="text" class="form-control ml-1" placeholder="Enter Bug Title" required v-model="state.newBug.title">
                         </div>
                         <div class="col d-flex justify-content-center align-items-end">
-                          <span>reported by:<h6 class="ml-2">
-                            Insert Name
-                            <!-- TODO {{user.name}} -->
-                          </h6></span>
+                          <p class="">
+                            reported by: <b>{{ state.user.name }}</b>
+                          </p>
                         </div>
                       </div>
                       <div class="form-group mx-1">
                         <label for="exampleFormControlTextarea1">Describe the Bug in Detail</label>
-                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" required></textarea>
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" required v-model="state.newBug.description"></textarea>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary mr-2" title="submit bug">
+                          Report
+                        </button>
+                        <!-- TODO <router-link :to="{name: 'BugDetails', params: {id: state.activeBug.id}}"></router-link> -->
+                        <button type="button" class="btn btn-dark" data-dismiss="modal" title="cancel report and close modal">
+                          Cancel
+                        </button>
                       </div>
                     </form>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary" title="submit bug">
-                      Report
-                    </button>
-                    <!-- TODO <router-link :to="{name: 'BugDetails', params: {id: state.activeBug.id}}"></router-link> -->
-                    <button type="button" class="btn btn-dark" data-dismiss="modal" title="cancel report and close modal">
-                      Cancel
-                    </button>
                   </div>
                 </div>
               </div>
@@ -75,7 +74,7 @@
         </div>
       </div>
     </div>
-    <!-- BUG LIST section -->
+    <!-- SECTION BUG LIST section -->
     <div class="row d-flex flex-column flex-md-row mt-4 m-md-5">
       <div class="col">
         <div class="row border-line text-white bg-dark mobile-gone">
@@ -84,14 +83,14 @@
               Title
             </h6>
           </div>
-          <div class="col-3">
+          <div class="col-3 text-center">
             <h6>Reported By</h6>
           </div>
-          <div class="col-3">
+          <div class="col-3 text-center">
             <h6>Status</h6>
             <!--TODO nonServer-function @click="reorderByStatus" -->
           </div>
-          <div class="col-3">
+          <div class="col-3 text-right">
             <h6>Last Modified</h6>
             <!--TODO nonServer-function @click="reorderByDate" -->
           </div>
@@ -112,6 +111,7 @@ import { reactive, computed, onMounted } from 'vue'
 import { AppState } from '../AppState'
 import { bugsService } from '../services/BugsService'
 import Notification from '../utils/Notification'
+import $ from 'jquery'
 // import { logger } from '../utils/Logger'
 
 export default {
@@ -119,9 +119,10 @@ export default {
 
   setup() {
     const state = reactive({
-      bugs: computed(() => AppState.bugs)
-      // activeBug: computed(() => AppState.activeBug),
-      // newBug: {},
+      bugs: computed(() => AppState.bugs),
+      activeBug: computed(() => AppState.activeBug),
+      user: computed(() => AppState.user),
+      newBug: {}
       // checkbox: true // NOTE this is for the hide closed function
     })
     onMounted(async() => {
@@ -132,20 +133,21 @@ export default {
       }
     })
     return {
-      state
-      // user: computed(() => AppState.user)
+      state,
 
       // TODO
-      //     async createBug() {
-      //       try {
-      //         await bugsService.createBug(state.newBug)
-      //         state.newBug = {}
-      //         await bugsService.getAllBugs()
-      //         Notification.toast('New Bug Reported', 'success')
-      //       } catch (error) {
-      //         Notification.toast('Error: ' + error, 'error')
-      //       }
-      //     }
+      async createBug() {
+        try {
+          // await bugsService.getBugById()
+          await bugsService.createBug(state.newBug)
+          state.newBug = {}
+          $('#exampleModal').modal('hide')
+          await bugsService.getAllBugs()
+          Notification.toast('New Bug Reported', 'success')
+        } catch (error) {
+          Notification.toast('Error: ' + error, 'error')
+        }
+      }
 
       // TODO // non server function
       // hideClosed(){
@@ -195,6 +197,9 @@ h1, h6, p{
 }
 .hide-thing{
   display: none;
+}
+.display-override{
+  display: block;
 }
 @media screen and (max-width: 600px) {
   .mobile-gone {

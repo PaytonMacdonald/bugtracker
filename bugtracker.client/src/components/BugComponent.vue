@@ -3,27 +3,27 @@
     <!-- SECTION Desktop List -->
     <div class="row side-lines bottom-line2 py-2 mobile-gone">
       <div class="col-3">
-        <router-link class="" :to="{ name: 'BugDetails'}" title="click to read this bug's details page">
+        <router-link :class="bugProp.closed ? 'text-danger' :'text-success'" :to="{ name: 'BugDetails', params: { id: bugProp.id }}" title="click to read this bug's details page">
           <strong>{{ bugProp.title }}</strong>
         </router-link>
       </div>
-      <div class="col-3">
-        <span>Dean Smith</span>
-      <!-- TODO {{ user.name }} find with creator id???-->
+      <div class="col-3 text-center">
+        <span>{{ bugProp.creator.name }}</span>
+      <!-- TODO {{ bugProp.creator.name }} find with creator id???-->
       </div>
-      <div class="col-3">
-        <span class="text-success">Open</span>
+      <div class="col-3 text-center">
+        <span :class="bugProp.closed ? 'text-danger' :'text-success'">{{ bugProp.closed ? 'Closed' : 'Open' }}</span>
       <!-- TODO {{ bugProp.status ? <span class="text-success">Open</span> : <span class="text-danger">Closed</span> }} -->
       </div>
-      <div class="col-3">
-        <span>04/25/2021</span>
-      <!-- TODO {{ bugProp.closedDate }} not just the created date??? updates when createBug editBug or deleteBug runs?-->
+      <div class="col-3 text-right">
+        <span>{{ bugProp.updatedAt.split('T')[0] }}</span>
+      <!-- TODO {{ bugProp.updatedAt }} not just the created date??? updates when createBug editBug or deleteBug runs?-->
       </div>
     </div>
     <!-- SECTION Mobile List -->
     <div class="row mb-4 desktop-gone">
       <div class="col">
-        <router-link class="" :to="{ name: 'BugDetails' }" title="click to read this bug's details page">
+        <router-link class="" :to="{ name: 'BugDetails', params: {id: bugProp.id}}" title="click to read this bug's details page">
           <div class="card text-dark">
             <div class="card-header">
               <h5 class="card-title">
@@ -38,8 +38,9 @@
               <!-- TODO {{ user.name }} find with creator id???-->
               </p>
               <p class="card-text">
-                Status: <span class="text-success"><b>Open</b></span>
-              <!-- TODO {{ bugProp.status ? <span class="text-success"><b>Open</b></span> : <span class="text-danger"><b>Closed</b></span> }} -->
+                Status: <span :class="bugProp.closed ? 'text-danger' :'text-success'"><b>{{ bugProp.closed ? 'Closed' : 'Open' }}</b></span>
+                <!-- <span class="text-success"><b>Open</b></span> -->
+              <!-- TODO {{ bugProp.status ? `<span class="text-success"><b>Open</b></span>` : `<span class="text-danger"><b>Closed</b></span>` }} -->
               </p>
               <p class="card-text">
                 <span>Last updated: </span><b>04/25/2021</b>
@@ -54,6 +55,7 @@
 </template>
 
 <script>
+
 export default {
   name: 'Bug',
   props: {
@@ -69,7 +71,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .side-lines{
   border-right: solid;
   border-right-color: black;

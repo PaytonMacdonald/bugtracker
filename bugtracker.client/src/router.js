@@ -24,7 +24,7 @@ const routes = [
   },
   // TODO replace path with: '/bugdetails/:id'
   {
-    path: '/bugdetails',
+    path: '/bugdetails/:id',
     name: 'BugDetails',
     component: loadPage('BugDetails')
   }
